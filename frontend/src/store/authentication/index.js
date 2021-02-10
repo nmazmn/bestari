@@ -38,6 +38,7 @@ export default {
   },
 
   getters : {
-    isLogged: state => !!state.user
+    isLogged: state => !!state.user,
+    user: state => state.user.user
   }
 }

@@ -32,20 +32,22 @@
                     <validation-observer ref="loginValidation">
                         <b-form class="auth-login-form mt-2" @submit.prevent>
                             <!-- email -->
-                            <b-form-group label="Email" label-for="login-email">
+                            <b-form-group
+                                label="Login credential"
+                                label-for="login"
+                            >
                                 <validation-provider
                                     #default="{ errors }"
-                                    name="Email"
-                                    rules="required|email"
+                                    name="login credential"
+                                    rules="required"
                                 >
                                     <b-form-input
-                                        id="login-email"
-                                        v-model="userEmail"
+                                        id="login"
+                                        v-model="credential"
                                         :state="
                                             errors.length > 0 ? false : null
                                         "
-                                        name="login-email"
-                                        placeholder="john@example.com"
+                                        name="login"
                                     />
                                     <small class="text-danger">{{
                                         errors[0]
@@ -87,7 +89,6 @@
                                             class="form-control-merge"
                                             :type="passwordFieldType"
                                             name="login-password"
-                                            placeholder="············"
                                         />
                                         <b-input-group-append is-text>
                                             <feather-icon
@@ -128,20 +129,13 @@
                         </b-form>
                     </validation-observer>
 
-                    <b-card-text class="text-center mt-2">
-                        <span>New on our platform? </span>
-                        <b-link :to="{ name: 'page-auth-register-v2' }">
-                            <span>&nbsp;Create an account</span>
-                        </b-link>
-                    </b-card-text>
-
                     <!-- divider -->
-                    <div class="divider my-2">
+                    <!-- <div class="divider my-2">
                         <div class="divider-text">or</div>
-                    </div>
+                    </div> -->
 
                     <!-- social buttons -->
-                    <div class="auth-footer-btn d-flex justify-content-center">
+                    <!-- <div class="auth-footer-btn d-flex justify-content-center">
                         <b-button variant="facebook" href="javascript:void(0)">
                             <feather-icon icon="FacebookIcon" />
                         </b-button>
@@ -154,7 +148,7 @@
                         <b-button variant="github" href="javascript:void(0)">
                             <feather-icon icon="GithubIcon" />
                         </b-button>
-                    </div>
+                    </div> -->
                 </b-col>
             </b-col>
             <!-- /Login-->
@@ -211,11 +205,10 @@ export default {
         return {
             status: "",
             password: "",
-            userEmail: "",
+            credential: "",
             sideImg: require("@/assets/images/pages/login-v2.svg"),
             // validation rulesimport store from '@/store/index'
             required,
-            email,
         };
     },
     computed: {
@@ -243,7 +236,7 @@ export default {
                 if (success) {
                     try {
                         await this.login({
-                            email: this.userEmail,
+                            credential: this.credential,
                             password: this.password,
                         });
 
@@ -251,7 +244,14 @@ export default {
                             this.$router.push({ name: "home" });
                         }
                     } catch (e) {
-                        console.log(e.message);
+                        this.$toast({
+                            component: ToastificationContent,
+                            props: {
+                                title: "Invalid login credential",
+                                icon: "AlertCircleIcon",
+                                variant: "danger",
+                            },
+                        });
                     }
                 }
             });

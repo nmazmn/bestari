@@ -25,7 +25,7 @@
                 <template #button-content>
                     <div class="d-sm-flex d-none user-nav">
                         <p class="user-name font-weight-bolder mb-0">
-                            John Doe
+                            {{ user.name }}
                         </p>
                         <span class="user-status">Admin</span>
                     </div>
@@ -47,7 +47,7 @@
 
                 <b-dropdown-item link-class="d-flex align-items-center">
                     <feather-icon size="16" icon="LogOutIcon" class="mr-50" />
-                    <a @click="logout"><span>Logout</span></a>
+                    <span @click="logout">Logout</span>
                 </b-dropdown-item>
             </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -64,7 +64,7 @@ import {
     BAvatar,
 } from "bootstrap-vue";
 import DarkToggler from "@core/layouts/components/app-navbar/components/DarkToggler.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
     components: {
@@ -84,6 +84,10 @@ export default {
             type: Function,
             default: () => {},
         },
+    },
+
+    computed: {
+        ...mapGetters("auth", ["user"]),
     },
 
     methods: {
