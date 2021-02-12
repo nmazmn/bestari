@@ -11,9 +11,9 @@ class AuthenticationController extends Controller
     public function __invoke(Request $request)
     {
         $request->validate([
-        'credential' => 'required',
-        'password' => 'required',
-    ]);
+            'credential' => 'required',
+            'password' => 'required',
+        ]);
 
         $user = User::where('email', $request->credential)->first();
 
@@ -23,16 +23,16 @@ class AuthenticationController extends Controller
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
-            'message' => ['These credentials do not match our records.'],
-        ], 404);
+                'message' => ['These credentials do not match our records.'],
+            ], 404);
         }
 
         $token = $user->createToken('my-app-token')->plainTextToken;
 
         $response = [
-        'user' => $user,
-        'token' => $token,
-    ];
+            'user' => $user,
+            'token' => $token,
+        ];
 
         return response($response, 201);
     }
